@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joe's Hotdog Stand</title>
+</head>
+<body>
+    <h1>Joe's Hotdog Stand</h1>    
+    <ul id="bill">
+
+    </ul>
+    <img src="hotdog.jpeg" style="width: 200px">
+<script>
+    let items = {
+        hotdogs:{price: 4.24, qty:0}, 
+        fries:{price: 2.6, qty:0},
+        sodas:{price: 1.5, qty:0}
+    }
+    let subtotal, discounted, final, tax;
+    let discount = 0;
+
+    items.hotdogs.qty = parseFloat(prompt("How many hotdogs do you want?"));
+    items.fries.qty = parseFloat(prompt("How many fries do you want?"));
+    items.sodas.qty = parseFloat(prompt("How many sodas do you want?"));
+
+    function calculate(){
+        let hotdogs = parseFloat(items.hotdogs.price) * parseFloat(items.hotdogs.qty);
+        let fries = parseFloat(items.fries.price) * parseFloat(items.fries.qty);
+        let sodas = parseFloat(items.sodas.price) * parseFloat(items.sodas.qty);
+        subtotal = hotdogs+fries+sodas
+
+        if(subtotal >= 20){
+            discounted = subtotal - (subtotal * 0.10); // minus 10% of discount
+            //console.log(discounted)
+            final = discounted + (discounted * 0.0625); // and then add tax
+            //console.log(final)
+            tax = discounted * 0.0625;
+            discount = 10;
+        }
+        else{
+            discounted = subtotal;
+            tax = subtotal*0.0625;
+            final = subtotal + (subtotal * 0.0625); // only add tax
+        }
+        
+        //Now we are calling functions using $(function () {). This is a jQuery function call that I found on stackoverflow
+        document.getElementById("bill").innerHTML = `
+        <li><strong>Subtotal=</strong> $${convert(subtotal)}</li>
+        <li><strong>Discount=</strong> ${discount}%: $${convert(discounted)}</li>
+        <li><strong>Tax=</strong> 6.25%: $${convert(tax)}</li>
+        <li><strong>Final Total=</strong> $${convert(final)}</li>
+        `;
+    }
+
+    // convert to 2 decimal places
+    function convert(input) {
+        if(input.toString().length > 4){
+            var converted = input.toString().match(/^-?\d+(?:\.\d{0,2})?/); //I found this Regex expression on stack overflow: https://stackoverflow.com/questions/40954015/shorten-function-in-javascript
+            return converted;
+        }
+        else{
+            return input;
+        }
+
+    }
+    calculate();
+
+
+</script>
+</body>
+</html>
